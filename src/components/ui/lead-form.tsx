@@ -33,6 +33,9 @@ const EMPTY: Lead = {
   detalle: "",
 };
 
+const cardClass =
+  "mx-auto w-full rounded-3xl border border-line bg-surface shadow-[0_30px_80px_-24px_rgba(0,0,0,0.7)]";
+
 function Field({
   id,
   label,
@@ -46,10 +49,10 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="block text-[13px] font-medium text-ink-soft">
+      <label htmlFor={id} className="block text-[13px] font-medium text-body">
         {label}
       </label>
-      <div className="mt-2 flex h-12 items-center overflow-hidden rounded-full border border-line bg-paper pl-4 transition-all focus-within:border-gold focus-within:ring-4 focus-within:ring-gold/15">
+      <div className="mt-2 flex h-12 items-center overflow-hidden rounded-full border border-line bg-surface-2 pl-4 transition-all focus-within:border-gold focus-within:ring-4 focus-within:ring-gold/15">
         <span className="shrink-0 text-muted">{icon}</span>
         {children}
       </div>
@@ -58,7 +61,7 @@ function Field({
 }
 
 const inputClass =
-  "h-full w-full bg-transparent px-3 text-[15px] text-ink outline-none placeholder:text-muted/60";
+  "h-full w-full bg-transparent px-3 text-[15px] text-title outline-none placeholder:text-muted/50";
 
 export default function LeadForm() {
   const [values, setValues] = useState<Lead>(EMPTY);
@@ -90,16 +93,16 @@ export default function LeadForm() {
 
   if (status === "done") {
     return (
-      <div className="mx-auto w-full max-w-md rounded-3xl bg-paper p-10 text-center shadow-[0_24px_70px_-20px_rgba(7,43,45,0.35)]">
+      <div className={cn(cardClass, "max-w-md p-10 text-center")}>
         <img
           src={logoFull}
           alt="InterRenta — Conectamos confianza, gestionamos tranquilidad"
           className="mx-auto mb-8 w-[168px]"
         />
-        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/15 text-teal">
+        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/15 text-gold">
           <Check size={26} strokeWidth={2.5} />
         </span>
-        <h2 className="mt-6 font-serif text-4xl leading-tight text-ink">
+        <h2 className="mt-6 font-serif text-4xl leading-tight text-title">
           Listo, {values.nombre.split(" ")[0]}.
         </h2>
         <p className="mt-3 text-[15px] leading-relaxed text-muted">
@@ -110,7 +113,7 @@ export default function LeadForm() {
           href={whatsappLink(values)}
           target="_blank"
           rel="noreferrer"
-          className="mt-8 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-teal text-[15px] font-medium text-white transition hover:bg-teal-deep"
+          className="mt-8 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-gold text-[15px] font-semibold text-bg transition hover:bg-gold-deep"
         >
           <MessageCircle size={18} />
           Continuar por WhatsApp
@@ -123,13 +126,13 @@ export default function LeadForm() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-lg rounded-3xl bg-paper p-8 shadow-[0_24px_70px_-20px_rgba(7,43,45,0.35)] sm:p-10">
+    <div className={cn(cardClass, "max-w-lg p-8 sm:p-10")}>
       <div className="text-center">
         <img src={logoMark} alt="InterRenta" className="mx-auto mb-6 h-14 w-auto" />
-        <p className="inline-block rounded-full bg-gold/15 px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-gold-deep uppercase">
+        <p className="inline-block rounded-full bg-gold/10 px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-gold uppercase">
           Oriente Antioqueño
         </p>
-        <h1 className="mt-4 font-serif text-[2.6rem] leading-[1.05] text-ink">
+        <h1 className="mt-4 font-serif text-[2.6rem] leading-[1.05] text-title">
           Encontremos tu espacio.
         </h1>
         <p className="mt-3 text-[15px] leading-relaxed text-muted">
@@ -200,9 +203,7 @@ export default function LeadForm() {
         </Field>
 
         <fieldset className="pt-2">
-          <legend className="text-[13px] font-medium text-ink-soft">
-            Destinación
-          </legend>
+          <legend className="text-[13px] font-medium text-body">Destinación</legend>
           <p className="mt-1 text-xs text-muted">¿Para qué vas a usar el espacio?</p>
           <div className="mt-3 flex flex-wrap gap-2">
             {DESTINACIONES.map((option) => {
@@ -219,8 +220,8 @@ export default function LeadForm() {
                   className={cn(
                     "rounded-full border px-4 py-2 text-[13px] transition",
                     selected
-                      ? "border-gold bg-gold/15 font-medium text-ink"
-                      : "border-line text-muted hover:border-gold/50 hover:text-ink",
+                      ? "border-gold bg-gold/15 font-medium text-title"
+                      : "border-line text-muted hover:border-gold/50 hover:text-title",
                   )}
                 >
                   {option}
@@ -234,14 +235,14 @@ export default function LeadForm() {
             rows={3}
             maxLength={300}
             placeholder="Cuéntanos más..."
-            className="mt-3 w-full resize-none rounded-2xl border border-line bg-paper p-4 text-[15px] text-ink outline-none transition-all placeholder:text-muted/60 focus:border-gold focus:ring-4 focus:ring-gold/15"
+            className="mt-3 w-full resize-none rounded-2xl border border-line bg-surface-2 p-4 text-[15px] text-title outline-none transition-all placeholder:text-muted/50 focus:border-gold focus:ring-4 focus:ring-gold/15"
             value={values.detalle}
             onChange={(e) => set("detalle")(e.target.value)}
           />
         </fieldset>
 
         {error && (
-          <p role="alert" className="text-[13px] text-red-600">
+          <p role="alert" className="text-[13px] text-red-400">
             {error}
           </p>
         )}
@@ -249,7 +250,7 @@ export default function LeadForm() {
         <button
           type="submit"
           disabled={status === "sending"}
-          className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-gold text-[15px] font-semibold text-ink transition hover:bg-gold-deep disabled:opacity-60"
+          className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-gold text-[15px] font-semibold text-bg transition hover:bg-gold-deep disabled:opacity-60"
         >
           {status === "sending" ? (
             <Loader2 size={18} className="animate-spin" />

@@ -51,11 +51,17 @@ src/
 
 ### Sobre los logos
 
-El logo original (`LogointerrentaTransparente.png` del sitio principal) tiene la
-mitad inferior en **blanco**, invisible sobre papel blanco. Las dos variantes de
-`assets/` se derivaron de él recoloreando ese blanco a la tinta de marca
-`#161616` y recortando márgenes. Si InterRenta tiene un archivo oficial para
-fondo claro, reemplázalos.
+Ambos archivos son **recortes del logo original** (`LogointerrentaTransparente.png`
+del sitio principal), sin recolorear: la página es oscura, que es justo el fondo
+para el que ese logo fue diseñado.
+
+- `logo-interrenta-mark.png` — solo la parte dorada. Se usa en el encabezado y en
+  el formulario, donde el lockup completo quedaría ilegible por tamaño.
+- `logo-interrenta.png` — lockup completo con "Renta" y el tagline. Solo en la
+  pantalla de éxito, que es donde hay espacio para que se lea.
+
+Los favicons (`public/favicon.ico` y `public/favicon.png`) son copia de los de
+interrenta.com, para que ambos dominios se vean igual en la pestaña.
 
 ### Sobre Supabase
 
@@ -121,11 +127,17 @@ Requiere **Node 20.19+ o 22+**.
 
 | Uso | Hex |
 |---|---|
-| Papel / tarjeta | `#ffffff` |
-| Tinta | `#161616` |
+| Fondo | `#161616` |
+| Tarjeta | `#1f1f1f` · campos `#262525` |
+| Bordes | `#333333` |
+| Títulos | `#e2e2e2` |
+| Cuerpo | `#b8bcc8` · apagado `#9aa0ad` |
 | Dorado | `#ecb337` · `#f5d170` · `#d7af4d` |
-| Teal | `#0d4447` · `#072b2d` |
-| Texto apagado | `#6b7280` |
+
+La palabra del portal no es de un color plano: las letras son una ventana al
+campo que hay detrás, un degradado que va de blanco arriba-izquierda a dorado
+abajo-derecha. Al atravesar la letra, ese mismo campo llena la pantalla y la
+tarjeta oscura del formulario queda flotando encima.
 
 **Tipografías:** Cormorant Garamond (títulos) · Inter (cuerpo y la palabra del
 portal, en peso 900 — el recorte necesita trazo grueso).

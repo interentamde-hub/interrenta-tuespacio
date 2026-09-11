@@ -6,11 +6,12 @@ import LeadForm from "@/components/ui/lead-form";
 
 const PORTAL_FONT = '"Inter", "Arial Black", Arial, sans-serif';
 
+/** What the letters are a window onto: white at the top-left, gold at the bottom-right. */
 const FIELD_BACKGROUND =
-  "radial-gradient(circle at 20% 10%, rgba(236,179,55,.34), transparent 40%)," +
-  "radial-gradient(circle at 80% 22%, rgba(255,255,255,.10), transparent 30%)," +
-  "radial-gradient(circle at 50% 82%, rgba(7,43,45,.62), transparent 46%)," +
-  "linear-gradient(135deg,#0d4447 0%,#135b5f 48%,#072b2d 100%)";
+  "radial-gradient(circle at 20% 12%, rgba(255,255,255,.95), transparent 46%)," +
+  "radial-gradient(circle at 76% 28%, rgba(245,209,112,.80), transparent 44%)," +
+  "radial-gradient(circle at 52% 88%, rgba(215,175,77,.60), transparent 50%)," +
+  "linear-gradient(130deg,#fffdf8 0%,#f5d170 52%,#d7af4d 100%)";
 
 /** The portal freezes its typeface at mount, so hold the render until Inter 900 lands. */
 function useFontReady() {
@@ -40,7 +41,7 @@ export default function App() {
 
   if (!fontReady) {
     return (
-      <div className="grid min-h-svh place-items-center bg-paper">
+      <div className="grid min-h-svh place-items-center bg-bg">
         <img src={logoMark} alt="InterRenta" className="h-12 w-auto opacity-70" />
       </div>
     );
@@ -54,10 +55,10 @@ export default function App() {
       scrollLength={1.8}
       enterLabel="Ir al formulario"
       style={{
-        "--gp-paper": "#ffffff",
-        "--gp-ink": "#161616",
-        "--gp-field": "#0d4447",
-        "--gp-foreground": "#ffffff",
+        "--gp-paper": "#161616",
+        "--gp-ink": "#e2e2e2",
+        "--gp-field": "#f5d170",
+        "--gp-foreground": "#161616",
         fontFamily: "var(--font-sans)",
       }}
       background={
@@ -86,7 +87,7 @@ export default function App() {
           </p>
 
           <p
-            className="absolute inset-x-6 m-0 text-center text-base leading-relaxed text-ink-soft sm:text-lg"
+            className="absolute inset-x-6 m-0 text-center text-base leading-relaxed text-body sm:text-lg"
             style={{ top: "calc(var(--gp-word-bottom, 50%) + 28px)" }}
           >
             Encontremos el lugar para tu empresa.

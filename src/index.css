@@ -1,18 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #ffffff;
-  --color-paper-warm: #faf9f7;
-  --color-ink: #161616;
-  --color-ink-soft: #3d3d3d;
-  --color-muted: #6b7280;
-  --color-line: #e6e4df;
+  --color-bg: #161616;
+  --color-surface: #1f1f1f;
+  --color-surface-2: #262525;
+  --color-line: #333333;
+
+  --color-title: #e2e2e2;
+  --color-body: #b8bcc8;
+  --color-muted: #9aa0ad;
 
   --color-gold: #ecb337;
   --color-gold-soft: #f5d170;
   --color-gold-deep: #d7af4d;
   --color-teal: #0d4447;
-  --color-teal-deep: #072b2d;
 
   --font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial,
@@ -21,12 +22,13 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  color-scheme: dark;
 }
 
 body {
   margin: 0;
-  background: var(--color-paper);
-  color: var(--color-ink);
+  background: var(--color-bg);
+  color: var(--color-body);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -34,7 +36,7 @@ body {
 
 ::selection {
   background: var(--color-gold);
-  color: var(--color-ink);
+  color: var(--color-bg);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -49,6 +51,12 @@ body {
   display: none;
 }
 
+/* The touch picker ships untranslated and lands mid-composition on phones.
+   Tapping a letter still works, so drop the redundant control. */
+[data-gp-touch-picker][data-gp-touch-picker] {
+  display: none;
+}
+
 [data-gp-caption][data-gp-caption] {
   inset: auto 24px 8%;
   justify-content: center;
@@ -58,15 +66,19 @@ body {
   min-height: 48px;
   padding: 0 26px;
   gap: 14px;
+  border: 1px solid var(--color-gold);
   border-radius: 999px;
-  background: var(--color-ink);
-  color: var(--color-paper);
+  background: transparent;
+  color: var(--color-gold);
   font-family: var(--font-sans);
   font-size: 14px;
   font-weight: 500;
-  transition: background 0.18s ease;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
 }
 
 [data-gp-enter][data-gp-enter]:hover {
-  background: var(--color-teal);
+  background: var(--color-gold);
+  color: var(--color-bg);
 }
