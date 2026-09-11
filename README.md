@@ -37,16 +37,31 @@ se vuelve visible. Ver `wake` en `src/components/ui/glyph-portal.tsx`.
 
 ```
 src/
+├── assets/
+│   ├── logo-interrenta.png       Lockup completo, variante fondo claro
+│   └── logo-interrenta-mark.png  Marca compacta (solo "INTER" dorado)
 ├── components/ui/
 │   ├── glyph-portal.tsx     Portal tipográfico (vendored, MIT)
 │   └── lead-form.tsx        Formulario + estado de éxito
 ├── services/lead.service.ts Insert en Supabase + link de WhatsApp
-├── lib/
-│   ├── supabase.ts          Cliente (null si no hay credenciales)
-│   └── utils.ts             Helper cn()
+├── lib/utils.ts             Helper cn()
 ├── App.tsx                  Composición y carga de tipografías
 └── index.css                Tokens de marca + overrides del portal
 ```
+
+### Sobre los logos
+
+El logo original (`LogointerrentaTransparente.png` del sitio principal) tiene la
+mitad inferior en **blanco**, invisible sobre papel blanco. Las dos variantes de
+`assets/` se derivaron de él recoloreando ese blanco a la tinta de marca
+`#161616` y recortando márgenes. Si InterRenta tiene un archivo oficial para
+fondo claro, reemplázalos.
+
+### Sobre Supabase
+
+No se usa `@supabase/supabase-js`. La página hace **un solo INSERT**, y el SDK
+pesaba ~215 kB por auth, realtime y storage que aquí no se tocan. `lead.service.ts`
+va directo a la REST API con `fetch`.
 
 ---
 

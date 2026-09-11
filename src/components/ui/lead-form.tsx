@@ -10,6 +10,8 @@ import {
   User,
 } from "lucide-react";
 
+import logoFull from "@/assets/logo-interrenta.png";
+import logoMark from "@/assets/logo-interrenta-mark.png";
 import { cn } from "@/lib/utils";
 import { saveLead, whatsappLink, type Lead } from "@/services/lead.service";
 
@@ -79,7 +81,8 @@ export default function LeadForm() {
     try {
       await saveLead(values);
       setStatus("done");
-    } catch {
+    } catch (submitError) {
+      console.error("No se pudo guardar el lead", submitError);
       setStatus("idle");
       setError("No pudimos guardar tus datos. Escríbenos por WhatsApp y lo resolvemos.");
     }
@@ -88,6 +91,11 @@ export default function LeadForm() {
   if (status === "done") {
     return (
       <div className="mx-auto w-full max-w-md rounded-3xl bg-paper p-10 text-center shadow-[0_24px_70px_-20px_rgba(7,43,45,0.35)]">
+        <img
+          src={logoFull}
+          alt="InterRenta — Conectamos confianza, gestionamos tranquilidad"
+          className="mx-auto mb-8 w-[168px]"
+        />
         <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/15 text-teal">
           <Check size={26} strokeWidth={2.5} />
         </span>
@@ -117,6 +125,7 @@ export default function LeadForm() {
   return (
     <div className="mx-auto w-full max-w-lg rounded-3xl bg-paper p-8 shadow-[0_24px_70px_-20px_rgba(7,43,45,0.35)] sm:p-10">
       <div className="text-center">
+        <img src={logoMark} alt="InterRenta" className="mx-auto mb-6 h-14 w-auto" />
         <p className="inline-block rounded-full bg-gold/15 px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-gold-deep uppercase">
           Oriente Antioqueño
         </p>

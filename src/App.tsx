@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import logoMark from "@/assets/logo-interrenta-mark.png";
 import GlyphPortal from "@/components/ui/glyph-portal";
 import LeadForm from "@/components/ui/lead-form";
 
@@ -40,7 +41,7 @@ export default function App() {
   if (!fontReady) {
     return (
       <div className="grid min-h-svh place-items-center bg-paper">
-        <span className="font-serif text-2xl tracking-wide text-ink">InterRenta</span>
+        <img src={logoMark} alt="InterRenta" className="h-12 w-auto opacity-70" />
       </div>
     );
   }
@@ -71,9 +72,7 @@ export default function App() {
       front={
         <>
           <header className="absolute inset-x-[clamp(24px,5vw,64px)] top-[clamp(24px,4.5vw,48px)] flex items-center justify-between gap-5">
-            <span className="font-serif text-xl tracking-wide text-ink">
-              InterRenta
-            </span>
+            <img src={logoMark} alt="InterRenta" className="h-9 w-auto" />
             <span className="max-w-[14ch] text-right text-[11px] leading-snug text-muted sm:max-w-none">
               Oriente Antioqueño
             </span>
