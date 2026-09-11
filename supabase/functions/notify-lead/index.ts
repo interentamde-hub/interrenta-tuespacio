@@ -20,10 +20,26 @@ type WebhookPayload = {
   record: Lead | null;
 };
 
+// Los paneles web se tragan espacios y saltos de línea al pegar, y eso rompe la
+// autenticación SMTP con un error que no dice nada. Recorta en el borde.
 function env(name: string): string {
-  const value = Deno.env.get(name);
+  const value = Deno.env.get(name)?.trim();
   if (!value) throw new Error(`Falta el secreto ${name}`);
   return value;
+}
+
+/** Reporta la forma de las credenciales, nunca su contenido. */
+function logCredentialShape() {
+  const raw = Deno.env.get("SMTP_PASS") ?? "";
+  console.log("Config SMTP", {
+    host: Deno.env.get("SMTP_HOST"),
+    port: Deno.env.get("SMTP_PORT"),
+    user: Deno.env.get("SMTP_USER"),
+    notifyTo: Deno.env.get("NOTIFY_TO"),
+    passLargo: raw.length,
+    passLargoSinEspacios: raw.trim().length,
+    passConComillas: /^(".*"|'.*')$/s.test(raw.trim()),
+  });
 }
 
 const escape = (value: string) =>
@@ -118,6 +134,8 @@ Deno.serve(async (req) => {
       headers: { "Content-Type": "application/json" },
     });
   }
+
+  logCredentialShape();
 
   const user = env("SMTP_USER");
   const client = new SMTPClient({
