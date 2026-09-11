@@ -47,6 +47,9 @@ src/
 ├── lib/utils.ts             Helper cn()
 ├── App.tsx                  Composición y carga de tipografías
 └── index.css                Tokens de marca + overrides del portal
+
+supabase/functions/
+└── notify-lead/index.ts     Aviso por correo (SMTP Titan), lo dispara un webhook
 ```
 
 ### Sobre los logos
@@ -112,6 +115,80 @@ create policy "leads_espacios_insert_anon"
   on public.leads_espacios for insert to anon
   with check (true);
 ```
+
+---
+
+## Aviso por correo
+
+Cada INSERT en `leads_espacios` dispara un **Database Webhook** que llama a la
+Edge Function `notify-lead`, y esta envía el aviso por **SMTP de Titan**.
+
+```
+INSERT en leads_espacios
+  └─> Database Webhook (trigger pg_net)
+        └─> Edge Function notify-lead  (supabase/functions/notify-lead/)
+              └─> smtp.titan.email:465
+                    └─> correo a NOTIFY_TO
+```
+
+El correo lleva `Reply-To` con la dirección del interesado, así que responder
+desde tu bandeja le escribe directamente a él, y un botón que abre WhatsApp con
+su número ya formateado.
+
+### 1. Desplegar la función
+
+```bash
+npx supabase login
+npx supabase link --project-ref <PROJECT_REF>
+npx supabase functions deploy notify-lead
+```
+
+El `PROJECT_REF` es el subdominio de tu `VITE_SUPABASE_URL`
+(`https://<PROJECT_REF>.supabase.co`).
+
+### 2. Cargar los secretos
+
+**Nunca los pongas en el repositorio.** Van como secretos del proyecto, en
+Supabase → **Edge Functions** → **Secrets**, o por CLI:
+
+```bash
+npx supabase secrets set SMTP_HOST=smtp.titan.email SMTP_PORT=465
+npx supabase secrets set SMTP_USER=tu-correo@interrenta.com
+npx supabase secrets set SMTP_PASS=...
+npx supabase secrets set NOTIFY_TO=donde-quieres-recibirlo@interrenta.com
+```
+
+| Secreto | Valor |
+|---|---|
+| `SMTP_HOST` | `smtp.titan.email` |
+| `SMTP_PORT` | `465` (TLS implícito) |
+| `SMTP_USER` | El buzón completo que envía |
+| `SMTP_PASS` | Contraseña de ese buzón |
+| `NOTIFY_TO` | Destinatario del aviso |
+
+La función falla con `Falta el secreto X` si alguno no está, en vez de enviar a
+medias.
+
+### 3. Crear el webhook
+
+En Supabase → **Database** → **Webhooks** → **Create a new hook**:
+
+- **Table:** `public.leads_espacios`
+- **Events:** solo `Insert`
+- **Type:** `Supabase Edge Functions`
+- **Edge Function:** `notify-lead`
+- **Method:** `POST`
+
+Hazlo desde esta interfaz y no por SQL: así Supabase añade sola la cabecera
+`Authorization`, y la llave de servicio no queda escrita en la definición del
+trigger.
+
+### 4. Verificar
+
+Llena el formulario y revisa:
+
+- **Edge Functions → notify-lead → Logs** — la invocación y cualquier error SMTP.
+- **Database → Webhooks → el hook → Logs** — si el disparo salió.
 
 ---
 
