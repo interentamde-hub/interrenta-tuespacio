@@ -1,6 +1,6 @@
 # Tu espacio — InterRenta
 
-Landing de captación para **locales y oficinas** en el Oriente Antioqueño. Una
+Landing de captación para **locales y oficinas**. Una
 pantalla: un portal tipográfico que se atraviesa con scroll y, al otro lado, un
 formulario corto.
 

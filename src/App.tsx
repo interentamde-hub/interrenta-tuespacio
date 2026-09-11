@@ -78,11 +78,8 @@ export default function App() {
       }
       front={
         <>
-          <header className="absolute inset-x-[clamp(24px,5vw,64px)] top-[clamp(24px,4.5vw,48px)] flex items-center justify-between gap-5">
+          <header className="absolute inset-x-[clamp(24px,5vw,64px)] top-[clamp(24px,4.5vw,48px)] flex items-center">
             <img src={logo} alt="InterRenta" className="h-16 w-auto object-contain" />
-            <span className="max-w-[14ch] text-right text-[11px] leading-snug text-muted sm:max-w-none">
-              Oriente Antioqueño
-            </span>
           </header>
 
           <p

@@ -127,10 +127,7 @@ export default function LeadForm() {
   return (
     <div className={cn(cardClass, "max-w-2xl p-8 sm:p-10")}>
       <div className="text-center">
-        <p className="inline-block rounded-full bg-gold/15 px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-gold-deep uppercase">
-          Oriente Antioqueño
-        </p>
-        <h1 className="mt-4 font-serif text-[2.6rem] leading-[1.05] text-ink">
+        <h1 className="font-serif text-[2.6rem] leading-[1.05] text-ink">
           Encontremos tu espacio.
         </h1>
         <p className="mt-3 text-[15px] leading-relaxed text-ink-muted">
