@@ -51,14 +51,16 @@ src/
 
 ### Sobre los logos
 
-Ambos archivos son **recortes del logo original** (`LogointerrentaTransparente.png`
-del sitio principal), sin recolorear: la página es oscura, que es justo el fondo
-para el que ese logo fue diseñado.
+La página tiene dos mitades de distinto color, y el logo original no sirve para
+ambas: su "INTER" es dorado pero "Renta" y el tagline son **blancos**. Por eso
+hay dos archivos, los dos derivados de `LogointerrentaTransparente.png` del
+sitio principal.
 
-- `logo-interrenta-mark.png` — solo la parte dorada. Se usa en el encabezado y en
-  el formulario, donde el lockup completo quedaría ilegible por tamaño.
-- `logo-interrenta.png` — lockup completo con "Renta" y el tagline. Solo en la
-  pantalla de éxito, que es donde hay espacio para que se lea.
+- `logo-interrenta-mark.png` — solo la parte dorada, recortada sin tocar color.
+  Va en el encabezado de la portada oscura.
+- `logo-interrenta-light.png` — lockup completo con el blanco recoloreado a
+  `#161616`. Va en la pantalla de éxito, que es blanca; sin recolorear, la mitad
+  inferior sería invisible.
 
 Los favicons (`public/favicon.ico` y `public/favicon.png`) son copia de los de
 interrenta.com, para que ambos dominios se vean igual en la pestaña.
@@ -125,19 +127,22 @@ Requiere **Node 20.19+ o 22+**.
 
 ## Diseño
 
+La página va de oscuro a claro: la portada es negra, el formulario blanco.
+
 | Uso | Hex |
 |---|---|
-| Fondo | `#161616` |
-| Tarjeta | `#1f1f1f` · campos `#262525` |
-| Bordes | `#333333` |
-| Títulos | `#e2e2e2` |
-| Cuerpo | `#b8bcc8` · apagado `#9aa0ad` |
+| Portada — fondo | `#161616` |
+| Portada — títulos / cuerpo | `#e2e2e2` · `#b8bcc8` · apagado `#9aa0ad` |
+| Formulario — fondo / campos | `#ffffff` · `#faf9f7` |
+| Formulario — texto | `#161616` · `#3d3d3d` · apagado `#6b7280` |
+| Bordes claros | `#e6e4df` |
 | Dorado | `#ecb337` · `#f5d170` · `#d7af4d` |
 
-La palabra del portal no es de un color plano: las letras son una ventana al
-campo que hay detrás, un degradado que va de blanco arriba-izquierda a dorado
-abajo-derecha. Al atravesar la letra, ese mismo campo llena la pantalla y la
-tarjeta oscura del formulario queda flotando encima.
+La palabra del portal no tiene color propio: las letras son una ventana al campo
+que hay detrás, un degradado con núcleo blanco y dorado en los bordes. El núcleo
+está donde entra la cámara, así que el zoom desemboca en blanco — y sobre eso se
+funde el panel del formulario, que lleva fondo blanco sólido. Por eso el
+degradado nunca se ve detrás del formulario.
 
 **Tipografías:** Cormorant Garamond (títulos) · Inter (cuerpo y la palabra del
 portal, en peso 900 — el recorte necesita trazo grueso).
