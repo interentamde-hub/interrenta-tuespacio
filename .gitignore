@@ -17,6 +17,9 @@ dist-ssr
 .env.*
 !.env.example
 
+# Estado local del CLI de Supabase (incluye la URL del pooler)
+supabase/.temp/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
