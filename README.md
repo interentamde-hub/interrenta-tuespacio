@@ -146,6 +146,11 @@ npx supabase functions deploy notify-lead
 El `PROJECT_REF` es el subdominio de tu `VITE_SUPABASE_URL`
 (`https://<PROJECT_REF>.supabase.co`).
 
+> **En PowerShell usa `npx.cmd`, no `npx`.** El segundo resuelve a `npx.ps1`, que
+> pasa por la directiva de ejecución; si está en `Restricted` falla con
+> `UnauthorizedAccess`. El `.cmd` la evita sin tener que cambiar ajustes de
+> seguridad del sistema.
+
 ### 2. Cargar los secretos
 
 **Nunca los pongas en el repositorio.** Van como secretos del proyecto, en
