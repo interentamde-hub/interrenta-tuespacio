@@ -51,16 +51,19 @@ src/
 
 ### Sobre los logos
 
-La página tiene dos mitades de distinto color, y el logo original no sirve para
-ambas: su "INTER" es dorado pero "Renta" y el tagline son **blancos**. Por eso
-hay dos archivos, los dos derivados de `LogointerrentaTransparente.png` del
-sitio principal.
+La página tiene dos mitades de distinto color, y el logo no sirve igual para
+ambas: su "INTER" es dorado, pero "Renta" y el tagline son **blancos**.
 
-- `logo-interrenta-mark.png` — solo la parte dorada, recortada sin tocar color.
-  Va en el encabezado de la portada oscura.
-- `logo-interrenta-light.png` — lockup completo con el blanco recoloreado a
-  `#161616`. Va en la pantalla de éxito, que es blanca; sin recolorear, la mitad
-  inferior sería invisible.
+- `logo-interrenta.png` — el archivo original de interrenta.com, **sin
+  modificar**. Va en la portada oscura, que es el fondo para el que fue
+  diseñado. Se renderiza con `object-contain` porque el PNG trae márgenes
+  transparentes generosos.
+- `logo-interrenta-light.png` — el mismo lockup con el blanco recoloreado a
+  `#161616`. Solo para la pantalla de éxito, que es blanca; sin recolorear, la
+  mitad inferior del logo sería invisible.
+
+No uses una versión recortada en la portada: deja fuera "Renta" y el logo se ve
+partido.
 
 Los favicons (`public/favicon.ico` y `public/favicon.png`) son copia de los de
 interrenta.com, para que ambos dominios se vean igual en la pestaña.
