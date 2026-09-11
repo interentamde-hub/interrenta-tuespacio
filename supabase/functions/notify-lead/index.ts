@@ -1,7 +1,5 @@
 // Avisa por correo cada vez que entra un lead en `leads_espacios`.
 // Lo dispara un Database Webhook de Supabase sobre INSERT.
-import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
-
 type Lead = {
   id: string;
   created_at: string;
@@ -20,26 +18,10 @@ type WebhookPayload = {
   record: Lead | null;
 };
 
-// Los paneles web se tragan espacios y saltos de línea al pegar, y eso rompe la
-// autenticación SMTP con un error que no dice nada. Recorta en el borde.
 function env(name: string): string {
   const value = Deno.env.get(name)?.trim();
   if (!value) throw new Error(`Falta el secreto ${name}`);
   return value;
-}
-
-/** Reporta la forma de las credenciales, nunca su contenido. */
-function logCredentialShape() {
-  const raw = Deno.env.get("SMTP_PASS") ?? "";
-  console.log("Config SMTP", {
-    host: Deno.env.get("SMTP_HOST"),
-    port: Deno.env.get("SMTP_PORT"),
-    user: Deno.env.get("SMTP_USER"),
-    notifyTo: Deno.env.get("NOTIFY_TO"),
-    passLargo: raw.length,
-    passLargoSinEspacios: raw.trim().length,
-    passConComillas: /^(".*"|'.*')$/s.test(raw.trim()),
-  });
 }
 
 const escape = (value: string) =>
@@ -135,41 +117,37 @@ Deno.serve(async (req) => {
     });
   }
 
-  logCredentialShape();
-
-  const user = env("SMTP_USER");
-  const client = new SMTPClient({
-    connection: {
-      hostname: env("SMTP_HOST"),
-      port: Number(env("SMTP_PORT")),
-      tls: true,
-      auth: { username: user, password: env("SMTP_PASS") },
-    },
-  });
-
   const { html, text } = buildEmail(lead);
 
-  try {
-    await client.send({
-      from: `InterRenta <${user}>`,
-      to: env("NOTIFY_TO"),
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${env("RESEND_API_KEY")}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: env("MAIL_FROM"),
+      to: env("NOTIFY_TO").split(",").map((address) => address.trim()),
       // Responder al correo escribe directamente al interesado.
-      replyTo: lead.email ?? undefined,
+      reply_to: lead.email?.trim() || undefined,
       subject: `Nuevo lead: ${lead.empresa?.trim() || lead.nombre?.trim() || "sin empresa"} · ${lead.destinacion ?? "sin destinación"}`,
-      content: text,
       html,
-    });
-  } catch (error) {
-    console.error("No se pudo enviar el aviso", error);
+      text,
+    }),
+  });
+
+  const body = await response.text();
+
+  if (!response.ok) {
+    console.error("Resend rechazó el envío", response.status, body);
     // 500 hace que Supabase registre el fallo en net._http_response.
-    return new Response(JSON.stringify({ error: String(error) }), {
+    return new Response(JSON.stringify({ error: body }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
-  } finally {
-    await client.close();
   }
 
+  console.log("Aviso enviado", body);
   return new Response(JSON.stringify({ sent: true }), {
     headers: { "Content-Type": "application/json" },
   });

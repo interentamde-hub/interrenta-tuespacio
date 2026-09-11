@@ -121,15 +121,20 @@ create policy "leads_espacios_insert_anon"
 ## Aviso por correo
 
 Cada INSERT en `leads_espacios` dispara un **Database Webhook** que llama a la
-Edge Function `notify-lead`, y esta envía el aviso por **SMTP de Titan**.
+Edge Function `notify-lead`, y esta envía el aviso con la **API de Resend**.
 
 ```
 INSERT en leads_espacios
   └─> Database Webhook (trigger pg_net)
         └─> Edge Function notify-lead  (supabase/functions/notify-lead/)
-              └─> smtp.titan.email:465
+              └─> api.resend.com/emails
                     └─> correo a NOTIFY_TO
 ```
+
+> Se intentó primero con SMTP de Titan. Titan bloquea la contraseña normal en
+> SMTP cuando la cuenta tiene verificación en dos pasos y exige una contraseña
+> de aplicación, así que el envío fallaba con `535 5.7.8`. Resend evita esa
+> dependencia: autentica con una clave de API, no con credenciales de buzón.
 
 El correo lleva `Reply-To` con la dirección del interesado, así que responder
 desde tu bandeja le escribe directamente a él, y un botón que abre WhatsApp con
@@ -156,23 +161,20 @@ El `PROJECT_REF` es el subdominio de tu `VITE_SUPABASE_URL`
 **Nunca los pongas en el repositorio.** Van como secretos del proyecto, en
 Supabase → **Edge Functions** → **Secrets**, o por CLI:
 
-```bash
-npx supabase secrets set SMTP_HOST=smtp.titan.email SMTP_PORT=465
-npx supabase secrets set SMTP_USER=tu-correo@interrenta.com
-npx supabase secrets set SMTP_PASS=...
-npx supabase secrets set NOTIFY_TO=donde-quieres-recibirlo@interrenta.com
-```
-
 | Secreto | Valor |
 |---|---|
-| `SMTP_HOST` | `smtp.titan.email` |
-| `SMTP_PORT` | `465` (TLS implícito) |
-| `SMTP_USER` | El buzón completo que envía |
-| `SMTP_PASS` | Contraseña de ese buzón |
-| `NOTIFY_TO` | Destinatario del aviso |
+| `RESEND_API_KEY` | Clave de API de Resend (`re_...`) |
+| `MAIL_FROM` | Remitente, ej. `InterRenta <avisos@interrenta.com>` |
+| `NOTIFY_TO` | Destinatario. Acepta varios separados por coma |
 
 La función falla con `Falta el secreto X` si alguno no está, en vez de enviar a
 medias.
+
+**Sobre `MAIL_FROM`:** el dominio tiene que estar verificado en Resend (añade
+unos registros DNS en interrenta.com, que se administran desde Vercel). Mientras
+no lo esté, usa `onboarding@resend.dev`, que funciona sin verificar pero **solo
+entrega al correo dueño de la cuenta de Resend** — sirve para probar la cadena
+completa antes de tocar el DNS.
 
 ### 3. Crear el webhook
 
