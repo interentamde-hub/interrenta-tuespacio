@@ -176,7 +176,9 @@ medias.
 
 ### 3. Crear el webhook
 
-En Supabase → **Database** → **Webhooks** → **Create a new hook**:
+En Supabase → **Integrations** → **Webhooks** → **Create a new hook**
+(`/dashboard/project/<PROJECT_REF>/integrations/webhooks/overview`; en paneles
+antiguos estaban bajo *Database*, ya no):
 
 - **Table:** `public.leads_espacios`
 - **Events:** solo `Insert`
