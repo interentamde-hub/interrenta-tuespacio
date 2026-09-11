@@ -4,13 +4,17 @@ import logoMark from "@/assets/logo-interrenta-mark.png";
 import GlyphPortal from "@/components/ui/glyph-portal";
 import LeadForm from "@/components/ui/lead-form";
 
-const PORTAL_FONT = '"Inter", "Arial Black", Arial, sans-serif';
+// Only fonts that are certain to resolve. The portal disables motion if ANY family
+// in this stack fails document.fonts.check, and "Arial Black" is absent on Android,
+// which left phones static. The component appends its own fallbacks after this.
+const PORTAL_FONT = '"Inter"';
 
-/** What the letters are a window onto: white at the top-left, gold at the bottom-right. */
+/** What the letters are a window onto: white through the middle, gold at the edges.
+ *  The white core sits where the camera enters, so the zoom resolves into white. */
 const FIELD_BACKGROUND =
-  "radial-gradient(circle at 20% 12%, rgba(255,255,255,.95), transparent 46%)," +
-  "radial-gradient(circle at 76% 28%, rgba(245,209,112,.80), transparent 44%)," +
-  "radial-gradient(circle at 52% 88%, rgba(215,175,77,.60), transparent 50%)," +
+  "radial-gradient(circle at 50% 46%, rgba(255,255,255,.97), rgba(255,255,255,.55) 34%, rgba(255,255,255,0) 64%)," +
+  "radial-gradient(circle at 20% 12%, rgba(255,255,255,.90), transparent 46%)," +
+  "radial-gradient(circle at 78% 30%, rgba(245,209,112,.70), transparent 44%)," +
   "linear-gradient(130deg,#fffdf8 0%,#f5d170 52%,#d7af4d 100%)";
 
 /** The portal freezes its typeface at mount, so hold the render until Inter 900 lands. */
@@ -25,7 +29,9 @@ function useFontReady() {
         setReady(true);
       }
     };
-    const timeout = window.setTimeout(finish, 1800);
+    // Generous: if we give up before Inter lands, the portal mounts with a
+    // substituted face, fails its own font check and renders static.
+    const timeout = window.setTimeout(finish, 3000);
     document.fonts.load('900 100px "Inter"').then(finish, finish);
     return () => {
       settled = true;

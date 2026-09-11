@@ -1,19 +1,23 @@
 @import "tailwindcss";
 
 @theme {
+  /* Portada (oscura) */
   --color-bg: #161616;
-  --color-surface: #1f1f1f;
-  --color-surface-2: #262525;
-  --color-line: #333333;
-
   --color-title: #e2e2e2;
   --color-body: #b8bcc8;
   --color-muted: #9aa0ad;
 
+  /* Formulario (claro) */
+  --color-paper: #ffffff;
+  --color-tint: #faf9f7;
+  --color-ink: #161616;
+  --color-ink-soft: #3d3d3d;
+  --color-ink-muted: #6b7280;
+  --color-hairline: #e6e4df;
+
   --color-gold: #ecb337;
   --color-gold-soft: #f5d170;
   --color-gold-deep: #d7af4d;
-  --color-teal: #0d4447;
 
   --font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial,
@@ -55,6 +59,14 @@ body {
    Tapping a letter still works, so drop the redundant control. */
 [data-gp-touch-picker][data-gp-touch-picker] {
   display: none;
+}
+
+/* The form half is white. This panel fades in over the field, so the gradient
+   resolves into white instead of sitting behind the form.
+   Needs three attributes to outrank the component's [data-gp-motion=on] rule. */
+[data-gp-content][data-gp-content][data-gp-content] {
+  background: var(--color-paper);
+  color: var(--color-ink);
 }
 
 [data-gp-caption][data-gp-caption] {
